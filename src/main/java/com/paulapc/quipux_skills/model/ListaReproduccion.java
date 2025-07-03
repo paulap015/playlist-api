@@ -17,5 +17,6 @@ public class ListaReproduccion {
     private String nombre;
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name="lista_id")
     private List<Cancion> canciones;
 }
