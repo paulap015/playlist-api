@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Servicio que contiene la lógica de negocio para listas de reproducción.
+ */
 @Service
 @RequiredArgsConstructor
 public class ListaReproduccionImpl implements IListaReproduccionBusiness{

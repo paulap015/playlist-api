@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Controlador que expone los endpoints para gestionar las listas de reproducción.
+ */
 @RestController
 @RequestMapping("/lists")
 @RequiredArgsConstructor
@@ -17,21 +20,35 @@ public class ListaReproduccionController {
 
     private final ListaReproduccionImpl service;
 
+    /**
+     * Crea una nueva lista de reproducción.
+     * @param lista Objeto con nombre, descripción y canciones.
+     * @return ResponseEntity con la lista creada.
+     */
     @PostMapping
     public ResponseEntity<?> crearLista(@RequestBody ListaReproduccion lista) {
         if (lista.getNombre() == null || lista.getNombre().isBlank()) {
             return ResponseEntity.badRequest().body("Nombre no válido");
         }
         ListaReproduccion creada = service.crearLista(lista);
-        URI uri = URI.create("/lists/" + creada.getNombre());
-        return ResponseEntity.created(uri).body(creada);
+
+        return ResponseEntity.ok(creada);
     }
 
+    /**
+     * listar todas las playlist
+     * @return ResponseEntity con la lista
+     */
     @GetMapping
     public ResponseEntity<List<ListaReproduccion>> listarListas() {
         return ResponseEntity.ok(service.listarListas());
     }
 
+    /**
+     * Obtener una playlist por el nombre
+     * @param nombre de la playlist
+     * @return ResponseEntity ok o notfound si no la encuentra
+     */
     @GetMapping("/{nombre}")
     public ResponseEntity<?> obtenerLista(@PathVariable String nombre) {
         return service.obtenerLista(nombre)
@@ -39,6 +56,11 @@ public class ListaReproduccionController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * Eliminar por el nombre de la playlist
+     * @param nombre nombre playlist
+     * @return ResponseEntity nocontent al eliminar si no lo encuentra notfound
+     */
     @DeleteMapping("/{nombre}")
     public ResponseEntity<?> eliminarLista(@PathVariable String nombre) {
         boolean eliminada = service.eliminarLista(nombre);
